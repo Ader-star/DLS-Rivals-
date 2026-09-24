@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DLS Rivals — V2</title>
+<style>
+:root{--bg:#070b14;--card:#101827;--card2:#0c1220;--line:#24314a;--text:#f4f7fb;--muted:#9ba8bd;--blue:#2787ff;--red:#ff3d5a;--green:#31d07c;--yellow:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#12264b 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;z-index:10;background:#070b14eF;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.nav{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 18px}.brand{font-weight:900;letter-spacing:.08em}.brand span{color:var(--blue)}nav{display:flex;gap:8px;flex-wrap:wrap}nav a{padding:9px 11px;border-radius:10px;color:var(--muted);font-size:13px}nav a:hover{background:#162137;color:#fff}
+.container{max-width:1180px;margin:auto;padding:22px 18px 70px}.hero{padding:42px 0 24px}.eyebrow{color:#72b2ff;font-weight:800;font-size:12px;letter-spacing:.14em}.hero h1{font-size:clamp(38px,7vw,76px);line-height:.95;margin:12px 0}.hero p{max-width:700px;color:var(--muted);font-size:17px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--blue);color:#fff}.btn.alt{background:#17233a}.btn.red{background:var(--red)}.grid{display:grid;gap:14px}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:800px){.grid3,.grid2{grid-template-columns:1fr}nav{display:none}.hero{padding-top:28px}}
+.card{background:linear-gradient(180deg,#111b2c,#0b1220);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 30px #0004}.card h2,.card h3{margin-top:0}.muted{color:var(--muted)}.stat{font-size:30px;font-weight:900}.section{margin-top:34px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}.success{color:var(--green)}.warn{color:var(--yellow)}.danger{color:#ff7185}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 7px;border-bottom:1px solid var(--line);text-align:left}th{color:#8ea0ba;font-size:11px;text-transform:uppercase}.form{display:grid;gap:12px}.form input,.form textarea,.form select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#08101e;color:#fff}.form textarea{min-height:90px}.notice{padding:14px;border-radius:12px;background:#13233a;border:1px solid #2d4b73}.match{display:flex;align-items:center;justify-content:space-between;gap:12px}.score{font-size:24px;font-weight:900}.locked{filter:grayscale(.2)}.audio{width:100%}.footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.modal.show{display:flex}.modalbox{max-width:600px;width:100%;background:#0c1422;border:1px solid var(--line);border-radius:18px;padding:22px}.x{float:right;background:none;border:0;color:#fff;font-size:22px;cursor:pointer}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">DLS <span>RIVALS</span></div><nav>
+<a href="#accueil">Accueil</a><a href="#classement">Classement</a><a href="#matchs">Matchs</a><a href="#stats">Stats</a><a href="#media">Media</a><a href="#journal">Journal</a><a href="#inscription">Inscription</a><a href="admin.html">Organisateur</a>
+</nav></div></header>
+<main class="container" id="accueil">
+<section class="hero"><div class="eyebrow">SAISON 1 • PLATEFORME DLS RIVALS</div><h1>Every Match.<br>A Rivalry.</h1><p>Une plateforme de championnat DLS avec inscriptions, validations, journées, matchs à code, classements, statistiques et espace média.</p><div class="actions"><button class="btn" onclick="document.querySelector('#inscription').scrollIntoView({behavior:'smooth'})">Créer un compte</button><a class="btn alt" href="#matchs">Voir les matchs</a></div></section>
+
+<section class="grid grid3">
+<div class="card"><div class="muted">Équipes prévues</div><div class="stat">30</div><span class="pill">3 divisions</span></div>
+<div class="card"><div class="muted">Statistiques</div><div class="stat">LIVE</div><span class="pill">Classements • joueurs • équipes</span></div>
+<div class="card"><div class="muted">Matchs</div><div class="stat">🔐</div><span class="pill">Codes déverrouillés selon la date</span></div>
+</section>
+
+<section class="section" id="classement"><div class="card"><h2>🏆 Classement — Division 1</h2><div style="overflow:auto"><table><thead><tr><th>#</th><th>Équipe</th><th>MJ</th><th>V</th><th>N</th><th>D</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th></tr></thead><tbody id="standings"></tbody></table></div></div></section>
+
+<section class="section" id="matchs"><h2>📅 Matchs & codes</h2><div id="matches" class="grid grid2"></div></section>
+
+<section class="section" id="stats"><h2>📈 Statistiques</h2><div class="grid grid3">
+<div class="card"><h3>🥅 Buteurs</h3><div id="scorers"></div></div>
+<div class="card"><h3>🎯 Passeurs</h3><div id="assists"></div></div>
+<div class="card"><h3>⭐ Distinctions</h3><p><b>Équipe de la semaine:</b> Titans FC</p><p><b>Meilleure défense:</b> Phoenix</p><p><b>Meilleure attaque:</b> Titans FC</p><p><b>Domination:</b> Titans FC</p></div>
+</div></section>
+
+<section class="section"><h2>⚔️ Comparaison</h2><div class="card"><div class="grid grid3"><div><div class="muted">Team A</div><h2>3 buts</h2><p>18 points</p><p>6 victoires</p></div><div style="text-align:center;font-size:28px;padding-top:20px">VS</div><div><div class="muted">Team B</div><h2>1 but</h2><p>12 points</p><p>4 victoires</p></div></div></div></section>
+
+<section class="section" id="media"><h2>🎙️ Media & réactions</h2><div class="grid grid2"><div class="card"><h3>Interview d'après-match</h3><p class="muted">Le design des questions peut être modifié par l'organisateur.</p><p><b>Question:</b> Comment analyses-tu ton match ?</p><p><b>Question:</b> Quel est ton objectif pour la prochaine journée ?</p><form class="form" onsubmit="addReaction(event)"><input id="reactionName" required placeholder="Ton nom / équipe"><textarea id="reactionText" required placeholder="Écris ta réaction..."></textarea><button class="btn">Publier</button></form></div><div class="card"><h3>🎧 Réactions récentes</h3><div id="reactions"><p class="muted">Aucune réaction publiée dans ce navigateur.</p></div></div></div></section>
+
+<section class="section"><h2>💬 Dialogue entre joueurs</h2><div class="card"><p class="muted">Espace communautaire prévu avec modération, signalement et suppression depuis l'administration.</p><button class="btn alt" onclick="alert('La messagerie complète sera connectée à la base de données dans la version serveur.')">Ouvrir le dialogue</button></div></section>
+
+<section class="section" id="journal"><h2>📰 Journal</h2><div class="grid grid3"><div class="card"><span class="pill">NEWS</span><h3>Bienvenue dans DLS Rivals</h3><p class="muted">Les premières informations de la saison.</p></div><div class="card"><span class="pill">MATCH</span><h3>La prochaine journée arrive</h3><p class="muted">Les horaires seront publiés par l'organisateur.</p></div><div class="card"><span class="pill">SPONSOR</span><h3>Partenaires</h3><p class="muted">Espace réservé aux sponsors de la ligue.</p></div></div></section>
+
+<section class="section" id="inscription"><div class="card"><h2>👤 Créer un compte / inscrire une équipe</h2><p class="muted">Après l'enregistrement, l'équipe passe en attente jusqu'à validation du paiement par l'organisateur.</p><form class="form" onsubmit="register(event)">
+<input id="name" required placeholder="Nom du joueur"><input id="email" required type="email" placeholder="Email"><input id="team" required placeholder="Nom de l'équipe"><input id="phone" required placeholder="Numéro de téléphone"><label>Logo de l'équipe <input id="logo" type="file" accept="image/*"></label><label>Photo de l'équipe DLS <input id="dlsphoto" type="file" accept="image/*"></label><button class="btn">Enregistrer</button></form><div id="regNotice" style="margin-top:14px"></div></div></section>
+
+<section class="section"><div class="card"><h2>💳 Inscription & validation</h2><div class="notice"><b>Statut:</b> Après création du compte, le statut est <b>En attente d'enregistrement</b>.<br><br>Le numéro de paiement et le montant sont configurables par l'organisateur dans son espace. Une fois le paiement vérifié, l'équipe est validée.</div></div></section>
+<div class="footer">DLS Rivals — Projet indépendant. Prototype V2 : les données sont actuellement enregistrées dans le navigateur.</div>
+</main>
+<div class="modal" id="modal"><div class="modalbox"><button class="x" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+<script>
+const data={
+standings:[
+['1','Titans FC',6,5,0,1,21,8,13,15],['2','Phoenix',6,4,1,1,17,6,11,13],['3','Ravens',6,4,0,2,15,10,5,12],['4','Storm',6,3,1,2,13,11,2,10],['5','United',6,2,1,3,10,13,-3,7]
+],
+matches:[
+{a:'Titans FC',b:'Phoenix',date:'2026-09-12T09:00:00',code:'A21B',score:'3 - 1'},
+{a:'Ravens',b:'Storm',date:'2026-09-13T15:00:00',code:'R44X',score:'2 - 2'},
+{a:'United',b:'Titans FC',date:'2026-09-14T18:00:00',code:'U8K2',score:'À venir'}
+],
+scorers:[['Alex','Titans FC',9],['Mika','Phoenix',7],['Jo','Ravens',6]],
+assists:[['Dany','Titans FC',8],['Chris','Phoenix',6],['Léo','Storm',5]]
+};
+function render(){document.getElementById('standings').innerHTML=data.standings.map(r=>'<tr>'+r.map((x,i)=>i===0?'<td><b>'+x+'</b></td>':'<td>'+x+'</td>').join('')+'</tr>').join('');
+document.getElementById('scorers').innerHTML=data.scorers.map((x,i)=>`<p><b>${i+1}. ${x[0]}</b> — ${x[1]} <span class="pill">${x[2]} buts</span></p>`).join('');
+document.getElementById('assists').innerHTML=data.assists.map((x,i)=>`<p><b>${i+1}. ${x[0]}</b> — ${x[1]} <span class="pill">${x[2]} passes</span></p>`).join('');
+const now=new Date();document.getElementById('matches').innerHTML=data.matches.map(m=>{const d=new Date(m.date);const unlocked=now>=d;return `<div class="card match ${unlocked?'':'locked'}"><div><span class="pill">${unlocked?'🟢 OUVERT':'🔒 VERROUILLÉ'}</span><h3>${m.a} <span class="muted">VS</span> ${m.b}</h3><div class="muted">${d.toLocaleString('fr-FR')}</div><div class="score">${m.score}</div></div><div>${unlocked?`<button class="btn" onclick="showCode('${m.code}')">Voir le code</button>`:'<span class="pill">Code invisible</span>'}</div></div>`}).join('')}
+function showCode(c){document.getElementById('modalContent').innerHTML='<h2>🔐 Code du match</h2><p class="muted">Ce code est affiché uniquement lorsque la fenêtre du match est ouverte.</p><div style="font-size:42px;font-weight:900;letter-spacing:.2em;text-align:center;padding:20px">'+c+'</div>';document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function register(e){e.preventDefault();const reg={name:name.value,email:email.value,team:team.value,phone:phone.value,status:'En attente d’enregistrement',created:new Date().toISOString()};const regs=JSON.parse(localStorage.getItem('dls_regs')||'[]');regs.push(reg);localStorage.setItem('dls_regs',JSON.stringify(regs));document.getElementById('regNotice').innerHTML='<div class="notice"><b>🟠 En attente d’enregistrement</b><br>Votre équipe est enregistrée. Consultez Menu → Inscription pour les instructions de paiement et attendez la validation de l’organisateur.</div>';e.target.reset()}
+function addReaction(e){e.preventDefault();const arr=JSON.parse(localStorage.getItem('dls_reactions')||'[]');arr.unshift({name:reactionName.value,text:reactionText.value,date:new Date().toLocaleString('fr-FR')});localStorage.setItem('dls_reactions',JSON.stringify(arr));reactionName.value='';reactionText.value='';renderReactions()}
+function renderReactions(){const arr=JSON.parse(localStorage.getItem('dls_reactions')||'[]');document.getElementById('reactions').innerHTML=arr.length?arr.slice(0,5).map(x=>`<div class="notice" style="margin-bottom:8px"><b>${x.name}</b><div>${x.text}</div><small class="muted">${x.date}</small></div>`).join(''):'<p class="muted">Aucune réaction publiée dans ce navigateur.</p>'}
+render();renderReactions();
+</script>
+</body></html>

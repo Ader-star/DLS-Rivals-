@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DLS Rivals — Organisateur</title>
+<style>
+body{margin:0;background:#070b14;color:#f4f7fb;font-family:Inter,system-ui,Arial}.wrap{max-width:1100px;margin:auto;padding:25px 16px 60px}h1{margin-bottom:4px}.muted{color:#9ba8bd}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}@media(max-width:760px){.grid{grid-template-columns:1fr}}.card{background:#101827;border:1px solid #24314a;border-radius:16px;padding:18px}.btn{border:0;border-radius:10px;padding:10px 14px;background:#2787ff;color:#fff;font-weight:800;cursor:pointer}.btn.red{background:#ff3d5a}.btn.green{background:#31d07c;color:#04140b}input,textarea,select{width:100%;box-sizing:border-box;padding:11px;border-radius:9px;border:1px solid #24314a;background:#09111f;color:#fff;margin:7px 0}.row{display:flex;gap:8px;flex-wrap:wrap}.item{padding:10px;border:1px solid #24314a;border-radius:10px;margin:8px 0}.top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.tag{border:1px solid #24314a;border-radius:999px;padding:4px 8px;font-size:12px;color:#9ba8bd}.danger{color:#ff7185}.ok{color:#31d07c}a{color:#72b2ff}
+</style></head><body><div class="wrap">
+<div class="top"><div><h1>⚙️ DLS RIVALS — ORGANISATEUR</h1><div class="muted">Prototype V2 du tableau de bord.</div></div><a href="index.html">← Retour au site</a></div>
+<div class="grid" style="margin-top:20px">
+<div class="card"><h2>💳 Paramètres d'inscription</h2><label>Numéro NatCash<input id="natcash" placeholder="Numéro configuré par l'organisateur"></label><label>Montant<input id="amount" placeholder="Montant d'inscription"></label><button class="btn" onclick="saveSettings()">Enregistrer</button><p id="settingsMsg"></p></div>
+<div class="card"><h2>📅 Règles de journée</h2><label>Durée de la fenêtre de match (heures)<input id="window" type="number" value="72"></label><label>Prochaine journée<input id="nextday" placeholder="Journée 2"></label><button class="btn" onclick="saveRules()">Enregistrer</button><p id="rulesMsg"></p></div>
+</div>
+<div class="card" style="margin-top:14px"><h2>👥 Inscriptions en attente</h2><div id="regs"></div></div>
+<div class="grid" style="margin-top:14px">
+<div class="card"><h2>📰 Journal</h2><input id="newsTitle" placeholder="Titre"><textarea id="newsBody" placeholder="Texte"></textarea><button class="btn" onclick="saveNews()">Publier</button><div id="newsList"></div></div>
+<div class="card"><h2>🎙️ Questions interview</h2><input id="q1" placeholder="Question 1"><input id="q2" placeholder="Question 2"><input id="q3" placeholder="Question 3"><button class="btn" onclick="saveQuestions()">Enregistrer le décor/questions</button><p id="qMsg"></p></div>
+</div>
+<div class="card" style="margin-top:14px"><h2>🧹 Modération des réactions</h2><div id="reactions"></div></div>
+<div class="card" style="margin-top:14px"><h2>🧪 Ce que la vraie version serveur ajoutera</h2><ul><li>Comptes sécurisés avec authentification.</li><li>Base de données partagée entre tous les joueurs.</li><li>Upload réel des logos/photos/audio.</li><li>Validation des paiements côté organisateur.</li><li>Génération de codes de matchs côté serveur.</li><li>Calcul automatique et sécurisé des classements.</li><li>Permissions organisateur/modérateur.</li></ul></div>
+</div>
+<script>
+function get(k,d){return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}
+function saveSettings(){localStorage.setItem('dls_settings',JSON.stringify({natcash:natcash.value,amount:amount.value}));settingsMsg.innerHTML='<span class="ok">Paramètres enregistrés dans ce navigateur.</span>'}
+function saveRules(){localStorage.setItem('dls_rules',JSON.stringify({window:window.value,nextday:nextday.value}));rulesMsg.innerHTML='<span class="ok">Règles enregistrées.</span>'}
+function renderRegs(){const r=get('dls_regs',[]);regs.innerHTML=r.length?r.map((x,i)=>`<div class="item"><div class="top"><b>${x.team}</b><span class="tag">${x.status}</span></div><div class="muted">${x.name} • ${x.email} • ${x.phone}</div><div class="row" style="margin-top:8px"><button class="btn green" onclick="validateReg(${i})">Valider</button><button class="btn red" onclick="rejectReg(${i})">Refuser</button></div></div>`).join(''):'<p class="muted">Aucune inscription dans ce navigateur.</p>'}
+function validateReg(i){const r=get('dls_regs',[]);r[i].status='Équipe validée';localStorage.setItem('dls_regs',JSON.stringify(r));renderRegs()}
+function rejectReg(i){const r=get('dls_regs',[]);r[i].status='Refusée';localStorage.setItem('dls_regs',JSON.stringify(r));renderRegs()}
+function saveNews(){const a=get('dls_news',[]);a.unshift({title:newsTitle.value,body:newsBody.value});localStorage.setItem('dls_news',JSON.stringify(a));newsTitle.value='';newsBody.value='';renderNews()}
+function renderNews(){const a=get('dls_news',[]);newsList.innerHTML=a.map(x=>`<div class="item"><b>${x.title}</b><div class="muted">${x.body}</div></div>`).join('')}
+function saveQuestions(){localStorage.setItem('dls_questions',JSON.stringify([q1.value,q2.value,q3.value]));qMsg.innerHTML='<span class="ok">Questions enregistrées.</span>'}
+function renderReactions(){const a=get('dls_reactions',[]);reactions.innerHTML=a.length?a.map((x,i)=>`<div class="item"><b>${x.name}</b><div>${x.text}</div><div class="row"><button class="btn red" onclick="deleteReaction(${i})">Supprimer</button></div></div>`).join(''):'<p class="muted">Aucune réaction.</p>'}
+function deleteReaction(i){const a=get('dls_reactions',[]);a.splice(i,1);localStorage.setItem('dls_reactions',JSON.stringify(a));renderReactions()}
+renderRegs();renderNews();renderReactions();
+const s=get('dls_settings',{});natcash.value=s.natcash||'';amount.value=s.amount||'';const q=get('dls_questions',['Comment analyses-tu ton match ?','Quel joueur t’a impressionné ?','Quel est ton objectif ?']);[q1.value,q2.value,q3.value]=q;
+</script></body></html>
